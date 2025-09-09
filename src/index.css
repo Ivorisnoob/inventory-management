@@ -1,0 +1,104 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: 0 0% 100%;
+  --color-foreground: 240 10% 3.9%;
+  --color-card: 0 0% 100%;
+  --color-card-foreground: 240 10% 3.9%;
+  --color-popover: 0 0% 100%;
+  --color-popover-foreground: 240 10% 3.9%;
+  --color-primary: 240 5.9% 10%;
+  --color-primary-foreground: 0 0% 98%;
+  --color-secondary: 240 4.8% 95.9%;
+  --color-secondary-foreground: 240 5.9% 10%;
+  --color-muted: 240 4.8% 95.9%;
+  --color-muted-foreground: 240 3.8% 46.1%;
+  --color-accent: 240 4.8% 95.9%;
+  --color-accent-foreground: 240 5.9% 10%;
+  --color-destructive: 0 84.2% 60.2%;
+  --color-destructive-foreground: 0 0% 98%;
+  --color-border: 240 5.9% 90%;
+  --color-input: 240 5.9% 90%;
+  --color-ring: 240 5.9% 10%;
+  --radius: 0.5rem;
+}
+
+@theme dark {
+  --color-background: 240 10% 3.9%;
+  --color-foreground: 0 0% 98%;
+  --color-card: 240 10% 3.9%;
+  --color-card-foreground: 0 0% 98%;
+  --color-popover: 240 10% 3.9%;
+  --color-popover-foreground: 0 0% 98%;
+  --color-primary: 0 0% 98%;
+  --color-primary-foreground: 240 5.9% 10%;
+  --color-secondary: 240 3.7% 15.9%;
+  --color-secondary-foreground: 0 0% 98%;
+  --color-muted: 240 3.7% 15.9%;
+  --color-muted-foreground: 240 5% 64.9%;
+  --color-accent: 240 3.7% 15.9%;
+  --color-accent-foreground: 0 0% 98%;
+  --color-destructive: 0 62.8% 30.6%;
+  --color-destructive-foreground: 0 0% 98%;
+  --color-border: 240 3.7% 15.9%;
+  --color-input: 240 3.7% 15.9%;
+  --color-ring: 240 4.9% 83.9%;
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in-up {
+  animation: fade-in-up 400ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes subtle-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+.pulse-subtle {
+  animation: subtle-pulse 1600ms ease-in-out infinite;
+}
+
+/* Rising +/- bubble for quantity changes */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(6px) scale(0.95); }
+  50% { opacity: 1; }
+  to { opacity: 0; transform: translateY(-10px) scale(1); }
+}
+.rise-bubble {
+  animation: rise 800ms cubic-bezier(0.22,1,0.36,1) both;
+}
+
+/* App background inspired by soft, ambient panels */
+.app-bg {
+  background:
+    radial-gradient(1200px 600px at 50% -10%, hsl(var(--color-primary) / 0.06), transparent 60%),
+    radial-gradient(800px 400px at 100% 0%, hsl(var(--color-accent) / 0.05), transparent 60%),
+    radial-gradient(800px 400px at 0% 0%, hsl(var(--color-secondary) / 0.05), transparent 60%);
+  position: relative;
+}
+
+.app-bg:before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, hsl(var(--color-foreground) / 0.03), transparent 15%),
+    repeating-linear-gradient(
+      90deg,
+      hsl(var(--color-foreground) / 0.04) 0px,
+      hsl(var(--color-foreground) / 0.04) 1px,
+      transparent 1px,
+      transparent 20px
+    );
+  mask-image: radial-gradient(60% 40% at 50% 0%, black, transparent 70%);
+}
+
+body {
+  @apply bg-background text-foreground;
+}
