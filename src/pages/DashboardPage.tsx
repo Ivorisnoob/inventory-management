@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Dashboard } from '@/components/Dashboard';
 import type { InventoryStats } from '@/types/inventory';
-import { fetchStats } from '@/lib/api';
+import { fetchStats, fetchHistory, type HistoryEntry } from '@/lib/api';
 
 export function DashboardPage() {
   const [stats, setStats] = useState<InventoryStats>({
@@ -11,11 +11,14 @@ export function DashboardPage() {
     categories: 0,
   });
   const [loading, setLoading] = useState(true)
+  const [recent, setRecent] = useState<HistoryEntry[]>([])
 
   useEffect(() => {
     (async () => {
       const s = await fetchStats()
       setStats(s)
+      const h = await fetchHistory(5)
+      setRecent(h)
       setLoading(false)
     })()
   }, []);
@@ -72,7 +75,24 @@ export function DashboardPage() {
           </div>
         </div>
       ) : (
-        <Dashboard stats={stats} />
+        <>
+          <Dashboard stats={stats} />
+          <div>
+            <h2 className="text-xl font-semibold mt-8 mb-2">Recent Activity</h2>
+            {recent.length === 0 ? (
+              <p className="text-sm text-muted-foreground">No recent activity.</p>
+            ) : (
+              <ul className="text-sm divide-y">
+                {recent.map((e) => (
+                  <li key={e.id} className="py-2 flex items-center justify-between">
+                    <span className="truncate mr-4">{e.description || e.type}</span>
+                    <span className="text-muted-foreground">{e.at.toLocaleString()}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </>
       )}
     </div>
   );

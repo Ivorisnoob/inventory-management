@@ -87,4 +87,20 @@ export async function fetchStats(): Promise<InventoryStats> {
   }
 }
 
+export interface HistoryEntry {
+  id: number
+  itemId?: string
+  type: 'created' | 'updated' | 'deleted' | 'adjusted'
+  description?: string
+  delta?: number
+  at: Date
+}
+
+export async function fetchHistory(limit = 20): Promise<HistoryEntry[]> {
+  const res = await fetch(`${API_BASE}/api/history?limit=${encodeURIComponent(String(limit))}`)
+  if (!res.ok) throw new Error('Failed to fetch history')
+  const rows = await res.json()
+  return rows.map((r: any) => ({ ...r, at: new Date(r.at) }))
+}
+
 

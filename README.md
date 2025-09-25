@@ -95,14 +95,13 @@ server/
   - `POST /api/items/:id/adjust` - adjust quantity by a delta
   - `GET /api/stats` - dashboard stats
 
-## Future Enhancements
+## Features Roadmap / Enhancements
 
-- [ ] Search and filter functionality
-- [ ] Export/import capabilities
-- [ ] User authentication
+- [x] Search and category filter on inventory list
+- [x] CSV export/import
+- [x] Recent activity feed (create/update/delete/adjust)
 - [ ] Multi-location inventory tracking
-- [ ] Barcode scanning support
-- [ ] Inventory history and reporting
+- [ ] Inventory history and reporting (extended)
 
 ## Security & Open Source Notes
 
