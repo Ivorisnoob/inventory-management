@@ -1,6 +1,6 @@
 # Inventory Management System
 
-A modern, responsive inventory management system built with React, TypeScript, and Shadcn/UI.
+A modern, responsive inventory management system built with React, TypeScript, Shadcn/UI, and a local SQLite-backed API server.
 
 ## Features
 
@@ -20,17 +20,18 @@ A modern, responsive inventory management system built with React, TypeScript, a
 
 ## Tech Stack
 
-- **React 18** with TypeScript
-- **Vite** for fast development and building
-- **Tailwind CSS** for styling
-- **Shadcn/UI** for beautiful, accessible components
+- **React 19** with TypeScript
+- **Vite 7** for fast development and building
+- **Tailwind CSS 4** for styling
+- **Shadcn/UI** for accessible components
 - **React Router** for navigation
+- **Express + better-sqlite3** for a local SQLite API
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js 16 or higher
+- Node.js 18 or higher
 - npm or yarn
 
 ### Installation
@@ -42,14 +43,19 @@ A modern, responsive inventory management system built with React, TypeScript, a
 
 2. Start the development servers (frontend + API):
    ```bash
-   npm run dev
+   npm start
    ```
 
-3. Open [http://localhost:5173](http://localhost:5173) to view the application. The API runs on `http://localhost:8787` and stores data in a local SQLite file at `server/inventory.db`.
+3. Open [http://localhost:5173](http://localhost:5173) to view the application. The API runs on `http://localhost:8787` and stores data in a local SQLite file at `server/inventory.db` (auto-created and git-ignored).
+
+Optional: configure a custom API base for the client by setting `VITE_API_BASE` (defaults to `http://localhost:8787`).
 
 ### Available Scripts
 
-- `npm run dev` - Start development server
+- `npm start` - Start both frontend and API servers
+- `npm run dev` - Same as `npm start`
+- `npm run dev:client` - Start just the frontend (Vite)
+- `npm run dev:server` - Start just the API server (Express + SQLite)
 - `npm run build` - Build for production
 - `npm run preview` - Preview production build
 - `npm run lint` - Run ESLint
@@ -69,37 +75,44 @@ src/
 ├── types/
 │   └── inventory.ts  # TypeScript type definitions
 ├── lib/
+│   ├── api.ts        # API client for the Express + SQLite server
 │   └── utils.ts      # Utility functions
 └── App.tsx           # Main app component with routing
 server/
 ├── index.ts          # Express + SQLite API server
-└── inventory.db      # Local SQLite database (auto-created)
+└── inventory.db      # Local SQLite database (auto-created, git-ignored)
 ```
 
-## Demo Data
+## Data & API
 
-The application includes mock data for demonstration purposes:
-- Sample inventory items with various categories
-- Realistic pricing and stock levels
-- Low stock examples to showcase alerts
+- Data is persisted locally in `server/inventory.db` using SQLite.
+- Core endpoints:
+  - `GET /api/items` - list items
+  - `POST /api/items` - create item
+  - `GET /api/items/:id` - get item
+  - `PUT /api/items/:id` - update item
+  - `DELETE /api/items/:id` - delete item
+  - `POST /api/items/:id/adjust` - adjust quantity by a delta
+  - `GET /api/stats` - dashboard stats
 
 ## Future Enhancements
 
 - [ ] Search and filter functionality
-- [ ] Data persistence (database integration)
 - [ ] Export/import capabilities
 - [ ] User authentication
 - [ ] Multi-location inventory tracking
 - [ ] Barcode scanning support
 - [ ] Inventory history and reporting
 
+## Security & Open Source Notes
+
+- No secrets are committed. Local SQLite files are git-ignored.
+- Environment variables can be used for client configuration via `VITE_*` (e.g., `VITE_API_BASE`).
+- See `LICENSE`, `CONTRIBUTING.md`, and `CODE_OF_CONDUCT.md` for open-source policies.
+
 ## Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
+See `CONTRIBUTING.md` and follow the Code of Conduct in `CODE_OF_CONDUCT.md`.
 
 ## License
 
