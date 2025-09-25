@@ -35,6 +35,7 @@ export function ItemList({ items, onEdit, onDelete, onAdjustQuantity }: ItemList
   }
 
   const [bubbles, setBubbles] = useState<Record<string, { key: number; delta: number } | undefined>>({})
+  const [txnValueByItem, setTxnValueByItem] = useState<Record<string, number | undefined>>({})
 
   const triggerBubble = (id: string, delta: number) => {
     const key = Date.now()
@@ -137,6 +138,55 @@ export function ItemList({ items, onEdit, onDelete, onAdjustQuantity }: ItemList
                       }}
                     >
                       +
+                    </Button>
+                  </div>
+                  {/* Quick transaction: IN/OUT with arbitrary quantity */}
+                  <div className="flex items-center gap-1">
+                    <input
+                      type="number"
+                      min={1}
+                      placeholder="0"
+                      value={txnValueByItem[item.id] ?? ''}
+                      onChange={(e) => {
+                        const v = Math.max(0, Number(e.target.value || 0))
+                        setTxnValueByItem((prev) => ({ ...prev, [item.id]: v }))
+                      }}
+                      className="h-8 w-16 rounded-md border border-input bg-background px-2 text-xs"
+                    />
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="outline"
+                      className="h-8"
+                      onClick={() => {
+                        if (!onAdjustQuantity) return
+                        const amt = Math.floor(Number(txnValueByItem[item.id] || 0))
+                        if (amt > 0) {
+                          onAdjustQuantity(item.id, amt)
+                          triggerBubble(item.id, amt)
+                          setTxnValueByItem((prev) => ({ ...prev, [item.id]: undefined }))
+                        }
+                      }}
+                    >
+                      In
+                    </Button>
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="outline"
+                      className="h-8"
+                      onClick={() => {
+                        if (!onAdjustQuantity) return
+                        const amt = Math.floor(Number(txnValueByItem[item.id] || 0))
+                        if (amt > 0) {
+                          const delta = -amt
+                          onAdjustQuantity(item.id, delta)
+                          triggerBubble(item.id, delta)
+                          setTxnValueByItem((prev) => ({ ...prev, [item.id]: undefined }))
+                        }
+                      }}
+                    >
+                      Out
                     </Button>
                   </div>
                 </div>
