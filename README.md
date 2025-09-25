@@ -40,12 +40,12 @@ A modern, responsive inventory management system built with React, TypeScript, a
    npm install
    ```
 
-2. Start the development server:
+2. Start the development servers (frontend + API):
    ```bash
    npm run dev
    ```
 
-3. Open [http://localhost:5173](http://localhost:5173) to view the application
+3. Open [http://localhost:5173](http://localhost:5173) to view the application. The API runs on `http://localhost:8787` and stores data in a local SQLite file at `server/inventory.db`.
 
 ### Available Scripts
 
@@ -71,6 +71,9 @@ src/
 ├── lib/
 │   └── utils.ts      # Utility functions
 └── App.tsx           # Main app component with routing
+server/
+├── index.ts          # Express + SQLite API server
+└── inventory.db      # Local SQLite database (auto-created)
 ```
 
 ## Demo Data
